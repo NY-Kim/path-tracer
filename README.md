@@ -120,9 +120,11 @@ and `SpotLight`. If you choose to implement additional light types from the ones
 described, each one will be worth 10 extra credit points.
 
 Basic Cornell Box scene with a point light rather than area light:
+
 ![](pointLight.png)
 
 Two-light Cornell Box scene with spot lights rather than area lights:
+
 ![](spotLights.png)
 
 Submitting your project
