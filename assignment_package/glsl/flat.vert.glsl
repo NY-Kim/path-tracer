@@ -14,7 +14,7 @@ void main()
     fs_Col = vs_Col;
     vec4 modelposition = u_Model * vec4(vs_Pos, 1);
 
-    //built-in things to pass down the pipeline
+    // built-in things to pass down the pipeline
     gl_Position = u_ViewProj * modelposition;
 
 }
