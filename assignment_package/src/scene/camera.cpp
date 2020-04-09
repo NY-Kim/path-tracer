@@ -2,7 +2,7 @@
 
 #include <la.h>
 #include <iostream>
-
+#include <warpfunctions.h>
 
 Camera::Camera():
     Camera(400, 400)
@@ -17,6 +17,9 @@ Camera::Camera(unsigned int w, unsigned int h):
 {}
 
 Camera::Camera(unsigned int w, unsigned int h, const Vector3f &e, const Vector3f &r, const Vector3f &worldUp):
+    lensRadius(1.5f),
+    focalDistance(29.5f),
+    sampler(new Sampler(100, 0)),
     fovy(45),
     width(w),
     height(h),
@@ -43,7 +46,10 @@ Camera::Camera(const Camera &c):
     right(c.right),
     world_up(c.world_up),
     V(c.V),
-    H(c.H)
+    H(c.H),
+    lensRadius(c.lensRadius),
+    focalDistance(c.focalDistance),
+    sampler(new Sampler(100, 0))
 {}
 
 void Camera::CopyAttributes(const Camera &c)
@@ -134,9 +140,25 @@ Ray Camera::Raycast(float x, float y) const
 
 Ray Camera::RaycastNDC(float ndc_x, float ndc_y) const
 {
-    glm::vec3 P = ref + ndc_x*H + ndc_y*V;
-    Ray result(eye, glm::normalize(P - eye));
-    return result;
+    if (!isThinLens) {
+        glm::vec3 P = ref + ndc_x*H + ndc_y*V;
+        Ray result(eye, glm::normalize(P - eye));
+        return result;
+    } else {
+        glm::vec3 focalCenter = eye + look * focalDistance;
+        glm::vec3 P = ndc_x * H + ndc_y * V + focalCenter;
+
+        glm::vec4 o1(right[0], up[0], look[0], 0);
+        glm::vec4 o2(right[1], up[1], look[1], 0);
+        glm::vec4 o3(right[2], up[2], look[2], 0);
+        glm::vec4 o4(0, 0, 0, 1);
+        glm::mat4 orientataion(o1, o2, o3, o4);
+
+        glm::vec3 origin = eye + glm::vec3(glm::inverse(orientataion) * glm::vec4(WarpFunctions::squareToDiskConcentric(sampler->Get2D()), 0.f)) * lensRadius;
+        glm::vec3 direction = glm::normalize(P - origin);
+        Ray ray = Ray(origin, direction);
+        return ray;
+    }
 }
 
 void Camera::create()

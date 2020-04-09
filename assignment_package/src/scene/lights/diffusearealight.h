@@ -22,7 +22,7 @@ public:
     // of uniform random variables, generate a sample point on the surface
     // of our shape and evaluate the light emitted along the ray from
     // our Shape's surface to the reference point.
-    Color3f Sample_Li(const Intersection &ref, const Point2f &xi,
+    virtual Color3f Sample_Li(const Intersection &ref, const Point2f &xi,
                                          Vector3f *wi, Float *pdf) const;
 
 

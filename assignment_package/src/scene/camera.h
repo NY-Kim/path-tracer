@@ -4,6 +4,7 @@
 
 #include <raytracing/ray.h>
 #include <openGL/drawable.h>
+#include <samplers/sampler.h>
 
 //A perspective projection camera
 //Receives its eye position and reference point from the scene XML file
@@ -35,10 +36,13 @@ public:
              H;        //Represents the horizontal component of the plane of the viewing frustum that passes through the camera's reference point. Used in Camera::Raycast.
 
     Matrix4x4 GetViewProj() const;
+    float lensRadius = 1.5f, focalDistance = 29.5f;
+    Sampler *sampler;
+    bool isThinLens;
 
     void RecomputeAttributes();
 
-    Ray Raycast(const Point2f &pt) const;         //Creates a ray in 3D space given a 2D point on the screen, in screen coordinates.
+    virtual Ray Raycast(const Point2f &pt) const;         //Creates a ray in 3D space given a 2D point on the screen, in screen coordinates.
     virtual Ray Raycast(float x, float y) const;            //Same as above, but takes two floats rather than a vec2.
     virtual Ray RaycastNDC(float ndc_x, float ndc_y) const; //Creates a ray in 3D space given a 2D point in normalized device coordinates.
 
@@ -50,15 +54,8 @@ public:
     void TranslateAlongUp(float amt);
 
     //Methods inherited from Drawable
-    void create();
+    virtual void create();
 
     virtual GLenum drawMode() const;
 };
 
-class ThinLensCamera : public Camera {
-public:
-    ThinLensCamera(float lensRadius, float focalDistance);
-    virtual Ray Raycast(float x, float y) const override;
-    virtual Ray RaycastNDC(float ndc_x, float ndc_y) const override;
-    float lensRadius, focalDistance;
-};

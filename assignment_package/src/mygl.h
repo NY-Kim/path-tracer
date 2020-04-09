@@ -40,7 +40,6 @@ private:
     Camera gl_camera;//This is a camera we can move around the scene to view it from any angle.
                                 //However, the camera defined in the config file is the one from which the scene will be rendered.
                                 //If you move gl_camera, you will be able to see the viewing frustum of the scene's camera.
-
     Scene scene;
     Sampler* sampler;
     int recursionLimit;

@@ -6,6 +6,7 @@
 #include <scene/geometry/squareplane.h>
 #include <scene/materials/mattematerial.h>
 #include <scene/lights/diffusearealight.h>
+#include <scene/lights/pointlight.h>
 
 
 Scene::Scene()

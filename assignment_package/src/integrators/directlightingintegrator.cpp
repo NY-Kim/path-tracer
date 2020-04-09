@@ -50,12 +50,12 @@ Color3f DirectLightingIntegrator::Li(const Ray &ray, const Scene &scene, std::sh
     Intersection shadow_test_f;
     if (scene.Intersect(isect.SpawnRay(wi_f), &shadow_test_f)) {
         if (shadow_test_f.objectHit->areaLight == light && pdf_f > 0.f) {
-            Color3f li_f = dynamic_cast<DiffuseAreaLight*>(light.get())->L(shadow_test_f, -wi_f);
+            Color3f li_f = light.get()->L(shadow_test_f, -wi_f);
             f = f_f * li_f * AbsDot(wi_f, isect.normalGeometric) / pdf_f;
         }
     }
 
-    float w_f = PowerHeuristic(1, pdf_f, 1, dynamic_cast<DiffuseAreaLight*>(light.get())->Pdf_Li(isect, wi_f));
+    float w_f = PowerHeuristic(1, pdf_f, 1, light.get()->Pdf_Li(isect, wi_f));
 
     return le + w_g * g + w_f * f;
 }

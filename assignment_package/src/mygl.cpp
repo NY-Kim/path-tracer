@@ -12,6 +12,7 @@
 #include <integrators/naiveintegrator.h>
 #include <integrators/fulllightingintegrator.h>
 #include <scene/lights/diffusearealight.h>
+#include <scene/lights/pointlight.h>
 #include <QDateTime>
 
 constexpr float screen_quad_pos[] = {

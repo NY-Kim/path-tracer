@@ -10,6 +10,8 @@
 #include <scene/materials/glassmaterial.h>
 #include <scene/materials/plasticmaterial.h>
 #include <scene/lights/diffusearealight.h>
+#include <scene/lights/pointlight.h>
+#include <scene/lights/spotlight.h>
 #include <iostream>
 
 
@@ -35,6 +37,11 @@ void JSONReader::LoadSceneFromFile(QFile &file, const QStringRef &local_path, Sc
             if(sceneObj.contains(QString("camera"))) {
                 camera = sceneObj["camera"].toObject();
                 scene.SetCamera(LoadCamera(camera));
+                if (camera.contains(QString("lensRadius"))) {
+                    scene.camera.isThinLens = true;
+                    scene.camera.lensRadius = static_cast< float >(camera["lensRadius"].toDouble());
+                    scene.camera.focalDistance = static_cast< float >(camera["focalDistance"].toDouble());
+                }
             }
             //load all materials in QMap with mtl name as key and Material itself as value
             if(sceneObj.contains(QString("materials"))){
@@ -190,12 +197,32 @@ bool JSONReader::LoadLights(QJsonObject &geometry, QMap<QString, std::shared_ptr
         bool twoSided = geometry.contains(QString("twoSided")) ? geometry["twoSided"].toBool() : false;
         lightType = std::make_shared<DiffuseAreaLight>(shape->transform, lightColor * intensity, shape, twoSided);
     }
+    else if(QString::compare(lgtType, QString("PointLight")) == 0)
+    {
+        Color3f lightColor = ToVec3(geometry["lightColor"].toArray());
+        Float intensity = static_cast< float >(geometry["intensity"].toDouble());
+        Point3f pLight = ToVec3(geometry["pLight"].toArray());
+        lightType = std::make_shared<PointLight>(shape->transform, pLight, lightColor * intensity);
+        (*lights).append(lightType);
+        return true;
+    }
+    else if(QString::compare(lgtType, QString("SpotLight")) == 0)
+    {
+        Color3f lightColor = ToVec3(geometry["lightColor"].toArray());
+        Float intensity = static_cast< float >(geometry["intensity"].toDouble());
+        Point3f pLight = ToVec3(geometry["pLight"].toArray());
+        Float totalWidth = static_cast< float >(geometry["totalWidth"].toDouble());
+        Float falloffStart = static_cast< float >(geometry["falloffStart"].toDouble());
+        lightType = std::make_shared<SpotLight>(shape->transform, pLight, lightColor * intensity, totalWidth, falloffStart);
+        (*lights).append(lightType);
+        return true;
+    }
     else
     {
+        std::cout << lgtType.toStdString() << std::endl;
         std::cout << "Could not parse the geometry!" << std::endl;
         return NULL;
     }
-
 
     auto primitive = std::make_shared<Primitive>(shape, nullptr,  std::static_pointer_cast<AreaLight>(lightType));
     QMap<QString, std::shared_ptr<Material>>::iterator i;

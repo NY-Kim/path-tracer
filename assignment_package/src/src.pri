@@ -46,7 +46,10 @@ SOURCES += \
     $$PWD/scene/materials/microfacet.cpp \
     $$PWD/scene/materials/microfacetbrdf.cpp \
     $$PWD/scene/materials/plasticmaterial.cpp \
-    $$PWD/scene/materials/microfacetbtdf.cpp
+    $$PWD/scene/materials/microfacetbtdf.cpp \
+    $$PWD/scene/lights/pointlight.cpp \
+    $$PWD/scene/lights/spotlight.cpp \
+    $$PWD/scene/geometry/csg.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -94,4 +97,7 @@ HEADERS += \
     $$PWD/scene/materials/microfacet.h \
     $$PWD/scene/materials/microfacetbrdf.h \
     $$PWD/scene/materials/plasticmaterial.h \
-    $$PWD/scene/materials/microfacetbtdf.h
+    $$PWD/scene/materials/microfacetbtdf.h \
+    $$PWD/scene/lights/pointlight.h \
+    $$PWD/scene/lights/spotlight.h \
+    $$PWD/scene/geometry/csg.h

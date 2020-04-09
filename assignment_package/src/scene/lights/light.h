@@ -24,6 +24,9 @@ class Light
     virtual Color3f Sample_Li(const Intersection &ref, const Point2f &xi,
                                                 Vector3f *wi, Float *pdf) const = 0;
 
+    virtual Color3f L(const Intersection &isect, const Vector3f &w) const = 0;
+
+    virtual float Pdf_Li(const Intersection &ref, const Vector3f &wi) const = 0;
 
     QString name; // For debugging
 
