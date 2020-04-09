@@ -49,7 +49,7 @@ Color3f FullLightingIntegrator::Li(const Ray &ray, const Scene &scene, std::shar
         Color3f g = Color3f(0.f);
         Intersection shadow_test_g;
         if (scene.Intersect(isect.SpawnRay(wi_g), &shadow_test_g)) {
-            if (/*shadow_test_g.objectHit->areaLight == light && */pdf_g > 0.f) {
+            if (shadow_test_g.objectHit->areaLight == light && pdf_g > 0.f) {
                 g = f_g * li_g * AbsDot(wi_g, isect.normalGeometric) / pdf_g;
             }
         }
@@ -61,7 +61,7 @@ Color3f FullLightingIntegrator::Li(const Ray &ray, const Scene &scene, std::shar
         Color3f f = Color3f(0.f);
         Intersection shadow_test_f;
         if (scene.Intersect(isect.SpawnRay(wi_f), &shadow_test_f)) {
-            if (/*shadow_test_f.objectHit->areaLight == light && */pdf_f > 0.f) {
+            if (shadow_test_f.objectHit->areaLight == light && pdf_f > 0.f) {
                 Color3f li_f = light.get()->L(shadow_test_f, -wi_f);
                 f = f_f * li_f * AbsDot(wi_f, isect.normalGeometric) / pdf_f;
             }
