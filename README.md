@@ -3,6 +3,29 @@ Making a k-d Tree
 
 **University of Pennsylvania, CIS 561: Advanced Computer Graphics, Homework 8**
 
+Nayeong's Renders 
+------------
+PennKey: kimny817
+
+KD Tree
+
+![](./renders/kdtree.png)
+
+Thin Lens Camera
+
+![](./renders/thinlens.png)
+
+CSG (union, inter, differ)
+
+![](./renders/csg_union.png)
+![](./renders/csg_differ.png)
+![](./renders/csg_inter.png)
+
+Point Light and Spot Light (through direct lighting integrator)
+
+![](./renders/pointlight.png)
+![](./renders/spotlight.png)
+
 Overview
 ------------
 You will implement a k-d tree in a standalone application. Your tree will store
