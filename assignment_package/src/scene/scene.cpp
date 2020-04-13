@@ -7,6 +7,7 @@
 #include <scene/materials/mattematerial.h>
 #include <scene/lights/diffusearealight.h>
 #include <scene/lights/pointlight.h>
+#include <scene/geometry/csg.h>
 
 
 Scene::Scene()
@@ -118,6 +119,98 @@ void Scene::CreateTestScene()
     {
         p->shape->create();
     }
+
+    camera = Camera(400, 400, Point3f(0, 5.5, -30), Point3f(0,2.5,0), Vector3f(0,1,0));
+    camera.near_clip = 0.1f;
+    camera.far_clip = 100.0f;
+    camera.fovy = 19.5f;
+    camera.create();
+    camera.RecomputeAttributes();
+    film = Film(400, 400);
+}
+
+void Scene::CreateTestSceneCSG()
+{
+    //Floor
+    //Area light
+    //Figure in front of light
+
+    auto matteWhite = std::make_shared<MatteMaterial>(Color3f(0.725, 0.71, 0.68), 0, nullptr, nullptr);
+    auto matteRed = std::make_shared<MatteMaterial>(Color3f(0.63, 0.065, 0.05), 0, nullptr, nullptr);
+    auto matteGreen = std::make_shared<MatteMaterial>(Color3f(0.14, 0.45, 0.091), 0, nullptr, nullptr);
+
+    auto floor = std::make_shared<SquarePlane>();
+    floor->transform = Transform(Vector3f(0,-2.5,0), Vector3f(-90,0,0), Vector3f(10,10,1));
+    auto floorPrim = std::make_shared<Primitive>(floor);
+    floorPrim->material = matteWhite;
+    floorPrim->name = QString("Floor");
+
+    auto leftWall = std::make_shared<SquarePlane>();
+    leftWall->transform = Transform(Vector3f(5,2.5,0), Vector3f(0,-90,0), Vector3f(10,10,1));
+    auto leftWallPrim = std::make_shared<Primitive>(leftWall);
+    leftWallPrim->material = matteRed;
+    leftWallPrim->name = QString("Left Wall");
+
+    auto rightWall = std::make_shared<SquarePlane>();
+    rightWall->transform = Transform(Vector3f(-5,2.5,0), Vector3f(0,90,0), Vector3f(10,10,1));
+    auto rightWallPrim = std::make_shared<Primitive>(rightWall);
+    rightWallPrim->material = matteGreen;
+    rightWallPrim->name = QString("Right Wall");
+
+    auto backWall = std::make_shared<SquarePlane>();
+    backWall->transform = Transform(Vector3f(0,2.5,5), Vector3f(0,180,0), Vector3f(10,10,1));
+    auto backWallPrim = std::make_shared<Primitive>(backWall);
+    backWallPrim->material = matteWhite;
+    backWallPrim->name = QString("Back Wall");
+
+    auto ceiling = std::make_shared<SquarePlane>();
+    ceiling->transform = Transform(Vector3f(0,7.5,0), Vector3f(90,0,0), Vector3f(10,10,1));
+    auto ceilingPrim = std::make_shared<Primitive>(ceiling);
+    ceilingPrim->material = matteWhite;
+    ceilingPrim->name = QString("Ceiling");
+
+    auto shortCube = std::make_shared<Cube>();
+    shortCube->transform = Transform(Vector3f(0.3f, 2, 0), Vector3f(0, 0, 0), Vector3f(4, 4, 2));
+    auto shortCubePrim = std::make_shared<Primitive>(shortCube);
+    shortCubePrim->material = matteWhite;
+    shortCubePrim->name = QString("Cube");
+
+    auto sphere = std::make_shared<Sphere>();
+    sphere->transform = Transform(Vector3f(-1.5, 2, 0), Vector3f(0, 0, 0), Vector3f(1.5, 1.5, 1.5));
+    auto spherePrim = std::make_shared<Primitive>(sphere);
+    spherePrim->material = matteRed;
+    spherePrim->name = QString("Sphere");
+
+    std::vector<std::shared_ptr<Primitive>> prims = std::vector<std::shared_ptr<Primitive>>();
+    prims.push_back(shortCubePrim);
+    prims.push_back(spherePrim);
+
+    std::vector<Operation> ops = std::vector<Operation>();
+    ops.push_back(INTER);
+    ops.push_back(PRIMITIVE);
+    ops.push_back(PRIMITIVE);
+
+    std::shared_ptr<CSG> csg = std::make_shared<CSG>(prims, ops);
+
+    // Light source, which is a diffuse area light with a large plane as its shape
+    auto lightSquare = std::make_shared<SquarePlane>();
+    lightSquare->transform = Transform(Vector3f(0,7.45f, -5), Vector3f(90,0,0), Vector3f(3, 3, 1));
+    auto lightSource = std::make_shared<DiffuseAreaLight>(lightSquare->transform, Color3f(17,12,4) * 2.f, lightSquare);
+    auto lightPrim = std::make_shared<Primitive>(lightSquare, nullptr, lightSource);
+    lightPrim->name = QString("Light Source");
+
+    primitives.append(csg);
+    primitives.append(floorPrim);
+    primitives.append(lightPrim);
+    primitives.append(leftWallPrim);
+    primitives.append(rightWallPrim);
+    primitives.append(backWallPrim);
+    primitives.append(ceilingPrim);
+
+    lights.append(lightSource);
+//    for (auto p : csg->primitives) {
+//        p->shape->create();
+//    }
 
     camera = Camera(400, 400, Point3f(0, 5.5, -30), Point3f(0,2.5,0), Vector3f(0,1,0));
     camera.near_clip = 0.1f;

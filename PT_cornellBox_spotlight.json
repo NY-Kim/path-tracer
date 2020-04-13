@@ -85,17 +85,34 @@
       ],
       "lights" : [
         {
-          "shape" : "Disc",
+          "shape" : "SquarePlane",
           "name" : "Light Source",
-          "type" : "PointLight",
+          "type" : "SpotLight",
           "lightColor" : [17,12,4],
           "intensity" : 2,
           "transform" : {
-            "translate" : [0,7.45,0],
+            "translate" : [2,7.45,0],
             "rotate" : [90,0,0],
-            "scale" : [1, 1, 1]
+            "scale" : [3, 3, 3]
           },
-          "pLight" : [0,7.45,0]
+          "pLight" : [2,7.45,0],
+          "totalWidth" : 30,
+          "falloffStart" : 30
+        },
+        {
+          "shape" : "SquarePlane",
+          "name" : "Light Source",
+          "type" : "SpotLight",
+          "lightColor" : [4,12,17],
+          "intensity" : 2,
+          "transform" : {
+            "translate" : [-2,7.45,0],
+            "rotate" : [90,0,0],
+            "scale" : [3, 3, 3]
+          },
+          "pLight" : [-2,7.45,0],
+          "totalWidth" : 30,
+          "falloffStart" : 30
         }
       ],
       "materials" : [

@@ -38,7 +38,7 @@ public:
     Matrix4x4 GetViewProj() const;
     float lensRadius = 1.5f, focalDistance = 29.5f;
     Sampler *sampler;
-    bool isThinLens;
+    bool isThinLens = false;
 
     void RecomputeAttributes();
 

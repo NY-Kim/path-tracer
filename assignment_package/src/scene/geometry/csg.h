@@ -13,6 +13,7 @@ public:
     CSGNode* leftChild;
     CSGNode* rightChild;
     int index;
+    void printOperation();
 };
 
 class CSG : public Primitive

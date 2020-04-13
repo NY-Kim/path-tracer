@@ -19,7 +19,7 @@ public:
     {}
     // Returns whether or not the given Ray intersects this Primitive.
     // Passes additional intersection data through the Intersection pointer
-    bool Intersect(const Ray& r, Intersection* isect) const;
+    virtual bool Intersect(const Ray& r, Intersection* isect) const;
 
     const AreaLight* GetAreaLight() const;
     const Material* GetMaterial() const;

@@ -46,11 +46,11 @@ Color3f FullLightingIntegrator::Li(const Ray &ray, const Scene &scene, std::shar
 
         float w_g = PowerHeuristic2(1, pdf_g, 1, isect.bsdf->Pdf(wo, wi_g));
 
-        Color3f g = Color3f(0.f);
+        Color3f g = f_g * li_g * AbsDot(wi_g, isect.normalGeometric) / pdf_g;
         Intersection shadow_test_g;
         if (scene.Intersect(isect.SpawnRay(wi_g), &shadow_test_g)) {
-            if (shadow_test_g.objectHit->areaLight == light && pdf_g > 0.f) {
-                g = f_g * li_g * AbsDot(wi_g, isect.normalGeometric) / pdf_g;
+            if (shadow_test_g.objectHit->areaLight != light || pdf_g == 0.f) {
+                g = Color3f(0.f);
             }
         }
 

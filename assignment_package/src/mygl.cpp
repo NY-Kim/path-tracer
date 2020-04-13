@@ -14,6 +14,7 @@
 #include <scene/lights/diffusearealight.h>
 #include <scene/lights/pointlight.h>
 #include <QDateTime>
+#include <scene/geometry/csg.h>
 
 constexpr float screen_quad_pos[] = {
     1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
@@ -178,6 +179,8 @@ void MyGL::paintGL()
 
 void MyGL::GLDrawScene()
 {
+//    CSG* csg = dynamic_cast<CSG*>(scene.primitives[0].get());
+//    for(auto g : csg->primitives)
     for(std::shared_ptr<Primitive> g : scene.primitives)
     {
         if(g->shape->drawMode() == GL_TRIANGLES)

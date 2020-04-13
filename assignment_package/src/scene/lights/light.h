@@ -30,7 +30,6 @@ class Light
 
     QString name; // For debugging
 
-  protected:
     const Transform transform;
 };
 

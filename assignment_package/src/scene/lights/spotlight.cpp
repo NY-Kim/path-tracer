@@ -1,7 +1,7 @@
 #include "spotlight.h"
 
 Color3f SpotLight::L(const Intersection &isect, const Vector3f &w) const {
-    return Color3f(0.f);
+    return glm::dot(isect.normalGeometric, w) > 0.f ? I : Color3f(0.f);
 }
 
 Color3f SpotLight::Sample_Li(const Intersection &ref, const Point2f &xi, Vector3f *wi, Float *pdf) const
@@ -16,7 +16,7 @@ float SpotLight::Pdf_Li(const Intersection &ref, const Vector3f &wi) const {
 }
 
 float SpotLight::Falloff(const Vector3f &w) const {
-    Vector3f wl = glm::normalize(Vector3f(transform.invT() * glm::vec4(w,0)));
+    Vector3f wl = glm::normalize(Vector3f(transform.invT() * glm::vec4(w, 0)));
     float cosTheta = wl.z;
     if (cosTheta < cosTotalWidth) {
         return 0;

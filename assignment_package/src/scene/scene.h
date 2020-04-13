@@ -21,6 +21,7 @@ public:
     void SetCamera(const Camera &c);
 
     void CreateTestScene();
+    void CreateTestSceneCSG();
     void Clear();
 
     bool Intersect(const Ray& ray, Intersection* isect) const;
