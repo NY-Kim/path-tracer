@@ -13,7 +13,7 @@ KD Tree
 
 Thin Lens Camera
 
-![](./renders/thinlens.png)
+![](./renders/thinslens.png)
 
 CSG (union, inter, differ)
 
