@@ -15,7 +15,7 @@ Thin Lens Camera
 
 ![](./renders/thinslens.png)
 
-CSG (union, inter, differ)
+CSG (union, difference, intersection)
 
 ![](./renders/csg_union.png)
 ![](./renders/csg_differ.png)
